@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#Bash script that configures an ubuntu server.
+#Backup the hosts file
+sudo cp /etc/hosts /etc/hosts.bak
+
+#Add the custom entries to the hosts file
+echo "127.0.0.2 localhost" | sudo tee -a
+/etc/hosts
+echo "8.8.8.8 facebook.com" | sudo tee -a 
+/etc/hosts
