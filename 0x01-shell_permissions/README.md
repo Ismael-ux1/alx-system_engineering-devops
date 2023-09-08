@@ -10,8 +10,6 @@ This project was a valuable step in my journey to becoming proficient in shell s
 
 Tasks.
 
-Certainly, here are the folder names with shorter descriptions, presented as clickable links:
-
     0-iam_betty: Changes the user ID to betty.
     
     1-who_am_i: Prints the effective userid of the current user.
