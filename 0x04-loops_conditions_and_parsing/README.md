@@ -2,7 +2,7 @@ Loops, conditions and parsing
 
 In this project, I focused on using loops and conditional statements in Bash scripting. I also practiced parsing and manipulating data from log files, specifically Apache access logs. Here's a brief overview of the tasks:
 
-[apache-access.log]([./apache-access.log): An Apache access log file parsed in tasks 102 and 103.
+[apache-access.log(1)]([./apache-access.log(1)): An Apache access log file parsed in tasks 102 and 103.
 
 
 Tasks 📃
