@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Server address
+server_address="35.153.66.82"
+
+# Connect to the server
+ssh -i ~/.ssh/school ubuntu@35.153.66.82
