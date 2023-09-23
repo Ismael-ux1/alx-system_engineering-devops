@@ -23,6 +23,7 @@ Directories
 
 [0x09-web_infrastructure_design](./0x09-web_infrastructure_design): This directory explores web infrastructure design principles, covering topics like web servers, load balancing, caching, and the architecture of web applications.
 
-[0x0A-configuration_management](./0x0A-configuration_management)
+[0x0A-configuration_management](./0x0A-configuration_management):
+[0x0B-ssh](./0x0B-ssh):
 
 `command_line_for_the_win`
