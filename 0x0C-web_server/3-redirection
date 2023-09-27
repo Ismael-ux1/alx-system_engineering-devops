@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-# A bash script that  Configure Nginx server to redirect to another page.
+# Bash script to configure Nginx for URL redirection
 
-# Install nginx if not already installed
-sudo apt-get update
+# Define strings for search and replace in Nginx configuration
+oldstr="server_name _;"
+newstr="server_name _;\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
+
+# Update the package list and install Nginx
+sudo apt-get -y update
 sudo apt-get -y install nginx
 
-# Start Nginx service
+# Create a simple HTML file in the default web root
+sudo sh -c 'echo "Hello World!" > /var/www/html/index.nginx-debian.html'
+
+# Modify Nginx configuration to add URL redirection
+sudo sed -i -e "s|$oldstr|$newstr|" /etc/nginx/sites-enabled/default
+
+# Start the Nginx service to apply the changes
 sudo service nginx start
-
-# Create a file named /redirect_me in the default web root
-sudo touch /var/www/html/redirect_me
-
-# Add a line to the Nginx configuration file to redirect
-sudo sed -i '/server_name _;/a \\\tlocation /redirect_me {\n\t\trewrite ^/redirect_me(.*)$ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n\t}' /etc/nginx/sites-available/default
-
-# Reload Nginx reload
-sudo service nginx reload
