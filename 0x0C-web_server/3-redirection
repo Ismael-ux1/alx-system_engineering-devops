@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# A bash script that  Configure Nginx server to redirect to another page.
+
+# Install nginx if not already installed
+sudo apt-get update
+sudo apt-get -y install nginx
+
+# Start Nginx service
+sudo service nginx start
+
+# Create a file named /redirect_me in the default web root
+sudo touch /var/www/html/redirect_me
+
+# Add a line to the Nginx configuration file to redirect
+sudo sed -i '/server_name _;/a \\\tlocation /redirect_me {\n\t\trewrite ^/redirect_me(.*)$ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n\t}' /etc/nginx/sites-available/default
+
+# Reload Nginx reload
+sudo service nginx reload
