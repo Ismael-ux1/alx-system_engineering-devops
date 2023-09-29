@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Accessing the container and resolving issues.
+service apache2 start
