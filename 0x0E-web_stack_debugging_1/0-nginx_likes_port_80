@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # Nginx Port 80 Configuration
 
-# Install or update Nginx
-apt-get update
-apt-get install -y nginx
+#!/usr/bin/env bash
+# Nginx Port 80 Configuration
 
-# Create a custom HTML file with the desired content
-echo '<!DOCTYPE html><html><head><title>Welcome to nginx!</title></head><body><h1>Welcome to nginx!</h1><p>If you see this page, the nginx web server is successfully installed and working. Further configuration is required.</p><p>For online documentation and support please refer to <a href="http://nginx.org/">nginx.org</a>.<br/>Commercial support is available at <a href="http://nginx.com/">nginx.com</a>.</p><p><em>Thank you for using nginx.</em></p></body></html>' > /var/www/html/index.html
+# Remove the default Nginx configuration if it exists
+rm /etc/nginx/sites-enabled/default
+
+# Create a symbolic link to the default configuration
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Restart the Nginx service to apply the configuration changes
 service nginx restart
-
