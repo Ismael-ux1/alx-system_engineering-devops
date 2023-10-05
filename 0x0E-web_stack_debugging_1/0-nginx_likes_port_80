@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # Nginx Port 80 Configuration
 
-#!/usr/bin/env bash
-# Nginx Port 80 Configuration
-
 # Remove the default Nginx configuration if it exists
 rm /etc/nginx/sites-enabled/default
 
