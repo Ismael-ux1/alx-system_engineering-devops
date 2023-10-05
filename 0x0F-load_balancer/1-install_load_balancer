@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Bash script to install and configure HAproxy
+
+# Update packages
+sudo apt-get -y update
+
+# Install HAproxy
+sudo apt-get -y install haproxy
+
+# Enable HAproxy to be managed via an init script
+sudo systemctl enable haproxy
+
+web01_hostname="328455-web-01"
+web02_hostname="328455-web-02"
+
+# Configure HAproxy to send traffic to web-01 and web-02 using a roundrobin algorithm
+echo "
+frontend http_front
+   bind *:80
+   stats uri /haproxy?stats
+   default_backend http_back
+
+backend http_back
+   balance roundrobin
+   server web-01 $web01_hostname:80 check
+   server web-02 $web02_hostname:80 check
+" | sudo tee /etc/haproxy/haproxy.cfg
+
+# Restart HAproxy service to apply changes
+sudo service haproxy restart
