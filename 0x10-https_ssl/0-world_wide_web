@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Bash script that will display information about subdomains.
+
+get_subdomain_info () {
+  output=$(dig $1.$2 +short)
+  if [ -z "$output" ]; then
+    echo "The subdomain $1.$2 does not exist."
+  else
+    record_type=$(echo "$output" | awk 'NR==1 {print $4}')
+    destination=$(echo "$output" | awk 'NR==2 {print $1}')
+    echo "The subdomain $1.$2 is a $record_type record and points to $destination"
+  fi
+}
+
+if [ -z "$1" ]; then
+  echo "The domain argument is mandatory."
+else
+  if [ -z "$2" ]; then
+    for sub in www lb-01 web-01 web-02; do
+      get_subdomain_info $sub $1
+    done
+  else
+    get_subdomain_info $2 $1
+  fi  
+fi
