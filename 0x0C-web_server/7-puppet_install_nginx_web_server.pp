@@ -1,40 +1,25 @@
-class nginx {
-  package { 'nginx':
-    ensure => installed,
-  }
-
-  service { 'nginx':
-    ensure     => running,
-    enable     => true,
-    require    => Package['nginx'],
-  }
-
-  file { '/var/www/html/index.html':
-    ensure  => file,
-    content => 'Hello World!',
-    require => Package['nginx'],
-  }
-
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => '
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root /var/www/html;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    location /redirect_me {
-        return 301 https://www.example.com;
-    }
-}',
-    notify  => Service['nginx'],
-    require => Package['nginx'],
-  }
+# Install Nginx
+package { 'nginx':
+  ensure => 'installed',
 }
 
-include nginx
+# Create an Nginx virtual host configuration
+file { '/etc/nginx/sites-available/default':
+  ensure => 'file',
+  content => template('nginx/default.erb'),
+  require => Package['nginx'],
+}
+
+# Enable the default site
+file { '/etc/nginx/sites-enabled/default':
+  ensure => 'link',
+  target => '/etc/nginx/sites-available/default',
+  require => File['/etc/nginx/sites-available/default'],
+}
+
+# Ensure Nginx is running and enabled
+service { 'nginx':
+  ensure => 'running',
+  enable => true,
+  require => [Package['nginx'], File['/etc/nginx/sites-enabled/default']],
+}
