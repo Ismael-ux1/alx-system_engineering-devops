@@ -8,7 +8,7 @@ get_subdomain_info () {
   if [ -z "$output" ]; then
     echo "The subdomain $1 does not exist."
   else
-    echo "The subdomain $1 is A record and points to $output"
+    echo "The subdomain $1 is a A record and points to $output"
   fi
 }
 
