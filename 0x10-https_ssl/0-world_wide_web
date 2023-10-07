@@ -3,12 +3,13 @@
 
 get_subdomain_info () {
   local subdomain="$1.$2"
-  local output=$(dig +short "$subdomain")
+  local output
+  output=$(dig +short "$subdomain")
   
   if [ -z "$output" ]; then
-    echo "The subdomain $subdomain does not exist."
+    echo "The subdomain $1 does not exist."
   else
-    echo "The subdomain $subdomain is A record and points to $output"
+    echo "The subdomain $1 is A record and points to $output"
   fi
 }
 
