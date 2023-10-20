@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
 # A Bash script to run Nginx as nginx on port 8080
-
-# Create the nginx user if it doesn't exist
-if [[ ! $(getent passwd nginx) ]]; then
-  useradd -r -s /sbin/nologin nginx
-fi
-
-# Ensure Nginx runs as 'nginx' and listens on port 8080
-sudo sed -i "s/#user www-data/user nginx/" /etc/nginx/nginx.conf
-sudo sed -i "s/80/8080/g" /etc/nginx/sites-available/default
-
-# Adjust permissions and manage processes
-chmod 644 /etc/nginx/nginx.conf
-
-# Restart Nginx with the 'nginx' user
-sudo -u nginx service nginx restart
+# Stop nginx service
+service nginx stop
+# Open nginx.conf file
+sed -i 's/user root;/user nginx;/g' /etc/nginx/nginx.conf
+# Change the listen directive to listen on port 8080
+sed -i 's/listen 80 default_server;/listen 8080 default_server;/g' /etc/nginx/sites-available/default
+# Start nginx service
+service nginx start
