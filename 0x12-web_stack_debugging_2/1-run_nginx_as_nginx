@@ -6,5 +6,9 @@ service nginx stop
 sed -i 's/user root;/user nginx;/g' /etc/nginx/nginx.conf
 # Change the listen directive to listen on port 8080
 sed -i 's/listen 80 default_server;/listen 8080 default_server;/g' /etc/nginx/sites-available/default
+
+chmod 644 /etc/nginx/nginx.conf
+
+pkill apache2
 # Start nginx service
 service nginx start
