@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-""" REST API script for employee TODO list progress. """
+""" Python script to export data in the CSV format. """
 import requests
 import sys
+import csv
 
 
 def main():
@@ -16,13 +17,26 @@ def main():
     todos = requests.get(f"{base_url}todos", params={"userId": user_id}).json()
 
     # Extract completed tasks
-    completed_tasks = [task["title"] for task in todos if task["completed"]]
+    completed_tasks = [task for task in todos if task["completed"]]
 
     # Print the user's name and the number of completed tasks
     print(f"{user_info['name']} completed {len(completed_tasks)}/{len(todos)} tasks:")
 
     # Print the titles of completed tasks
-    [print(f"\t{task}") for task in completed_tasks]
+    [print(f"\t{task['title']}") for task in completed_tasks]
+
+    # Export the task data to a CSV file
+    with open(f"{user_id}.csv", mode='w', newline='') as csv_file:
+        fieldnames = ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        for task in completed_tasks:
+            writer.writerow({
+                "USER_ID": user_id,
+                "USERNAME": user_info["name"],
+                "TASK_COMPLETED_STATUS": "Completed",
+                "TASK_TITLE": task["title"]
+            })
 
 
 if __name__ == "__main__":

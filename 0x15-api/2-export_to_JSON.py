@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-""" REST API script for employee TODO list progress. """
+""" Python script to export data in the JSON format """
 import requests
 import sys
+import json
 
 
 def main():
@@ -16,13 +17,17 @@ def main():
     todos = requests.get(f"{base_url}todos", params={"userId": user_id}).json()
 
     # Extract completed tasks
-    completed_tasks = [task["title"] for task in todos if task["completed"]]
+    completed_tasks = [{"task": task["title"], "completed": task["completed"], "username": user_info["name"]} for task in todos if task["completed"]]
 
     # Print the user's name and the number of completed tasks
     print(f"{user_info['name']} completed {len(completed_tasks)}/{len(todos)} tasks:")
 
     # Print the titles of completed tasks
-    [print(f"\t{task}") for task in completed_tasks]
+    [print(f"\t{task['task']}") for task in completed_tasks]
+
+    # Export the task data to a JSON file
+    with open(f"{user_id}.json", mode='w') as json_file:
+        json.dump({user_id: completed_tasks}, json_file, indent=4)
 
 
 if __name__ == "__main__":
