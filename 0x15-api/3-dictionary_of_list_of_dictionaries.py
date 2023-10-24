@@ -23,7 +23,7 @@ def fetch_user_tasks(user_id):
 def main():
     all_user_tasks = {}
 
-    # List of user IDs, you can add or change IDs as needed
+    # List of user IDs,
     user_ids = [1, 2, 3, 4, 5]  # Example user IDs
 
     for user_id in user_ids:
