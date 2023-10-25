@@ -13,7 +13,7 @@ def get_employee_todo_progress(employee_id):
     user_id = user_info.get('id', 'Unknown')
     username = user_info.get('username', 'Unknown')
 
-    # Fetch user's completed tasks
+    # Fetch user's completed tasks using userId parameter
     url = f'{base_url}/todos'
     params = {'userId': employee_id}
     todos = requests.get(url, params=params).json()
@@ -27,12 +27,10 @@ def get_employee_todo_progress(employee_id):
 def export_to_csv(employee_id, username, todos):
     filename = f'{employee_id}.csv'
     with open(filename, mode='w', newline='') as csv_file:
-        writer = csv.writer(csv_file)
-        writer.writerow(['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS',
-                         'TASK_TITLE'])
+        writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
         for task in todos:
-            task_status = 'True' if task['completed'] else 'False'
-            writer.writerow([employee_id, username, task_status,
+            task_status = "True" if task['completed'] else "False"
+            writer.writerow([str(employee_id), username, task_status,
                              task['title']])
 
 
