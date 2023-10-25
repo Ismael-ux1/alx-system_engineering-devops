@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ REST API script for employee TODO list progress with CSV export. """
+import csv
 import requests
 import sys
-import csv
 
 
 def get_employee_todo_progress(employee_id):
@@ -19,11 +19,6 @@ def get_employee_todo_progress(employee_id):
     todos = requests.get(url, params=params).json()
     completed_tasks = [task['title'] for task in todos if task['completed']]
     total_tasks = len(todos)
-
-    # Print user information and completed tasks
-    print(f'User ID and Username: OK')
-    print(f'User ID: {user_id} / Username: {username}')
-    print(f'Number of tasks in CSV: OK')
 
     # Export the data to a CSV file
     export_to_csv(employee_id, username, todos)
