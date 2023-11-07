@@ -8,24 +8,22 @@ import requests
 
 def top_ten(subreddit):
     """ define the fonction that takes a subreddit as an argument """
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
 
     # set the header for the request
-    headers = {'User-Agent': 'custom'}
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
     # Send a GET request to the Reddit API's
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10' \
-          '?limit=10'
     response = requests.get(url, headers=headers, allow_redirects=False)
 
-    # check if the status code of the response
     # if it's 200 the function prints None and returns
     if response.status_code != 200:
         print(None)
         return
 
-    # if the request is sucessful, parse the JSON response to extract the posts
-    posts = response.json()['data']['children']
+    # parse the JSON response to extract the posts
+    data = response.json()
 
     # Loop through the posts and print the title of each post
-    for post in posts:
+    for post in data['data']['children']:
         print(post['data']['title'])
