@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-import requests
-
 """
 A function that queries the Reddit API and
 returns titles of all hot articles
 """
+import requests
 
 
 def recurse(subreddit, hot_list=[], after=None):
