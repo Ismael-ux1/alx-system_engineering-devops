@@ -7,37 +7,44 @@ import requests
 
 
 def recurse(subreddit, hot_list=[], after=None):
-    # Define the URL for the Reddit API
+    if hot_list is None:
+        hot_list = []
+    # Reddit API
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
 
     # Define the headers for the request
     headers = {'User-agent': 'Mozilla/5.0'}
 
     # Define the parameters for the request
-    params = {'after': after}
+    params = {'limit': 10, 'after': after}
 
-    # Send a GET request to the Reddit API
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
+    try:
+        # Send a GET request to the Reddit API
+        response = requests.get(url, headers=headers, params=params,
+                                allow_redirects=False)
+        # If the subreddit is not valid, return None
+        if response.status_code != 200:
+            return None
 
-    # If the subreddit is not valid, return None
-    if response.status_code != 200:
+        # Parse the JSON response
+        data = response.json()
+        articles = data.get('data', {}).get('children', [])
+
+        # Extract the titles from this page
+        titles = [article['data']['title'] for article in articles]
+
+        # Append the titles to the hot_list
+        hot_list.extend(titles)
+
+        # Check if there are more pages (using the 'after' parameter)
+        after = data.get('data', {}).get('after')
+        if after:
+            # Make a recursive call with the 'after' parameter
+            return recurse(subreddit, hot_list, after=after)
+        else:
+            # No more pages, return the final list of titles
+            return hot_list
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
         return None
-
-    # Parse the JSON response
-    data = response.json()
-
-    # Extract the titles of the hot articles and append them to the hot_list
-    for post in data['data']['children']:
-        hot_list.append(post['data']['title'])
-
-    # Get the ID of the last article on the current page
-    after = data['data']['after']
-
-    # If there are more pages of results,
-    # recursively call the function to fetch the next page
-    if after is not None:
-        return recurse(subreddit, hot_list, after)
-
-    # If there are no more pages of results, return the hot_list
-    return hot_list
