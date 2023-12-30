@@ -5,16 +5,36 @@
 sudo apt-get -y update
 sudo apt-get -y install nginx
 
-# Configure redirection from /redirect_me to YouTube
-oldstr="server_name _;"
-newstr="server_name _;\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
-sudo sed -i -e "s|$oldstr|$newstr|" /etc/nginx/sites-available/default
+# Create a new Nginx configuration file
+sudo tee /etc/nginx/sites-available/my_custom_site <<EOF
+server {
+    listen 80 default_server;
+    server_name _;
 
-# Configure custom 404 page
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
-oldstr="error_page 404 /404.html;"
-newstr="error_page 404 /custom_404.html;"
-sudo sed -i -e "s|$oldstr|$newstr|" /etc/nginx/sites-available/default
+    # Redirect /redirect_me to YouTube
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
 
-# Restart nginx service to apply changes
+    # Custom 404 page
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+        root /var/www/html;
+        internal;
+    }
+
+    # Your other location blocks go here...
+
+    # Additional configuration as needed...
+}
+EOF
+
+# Enable the new site by creating a symbolic link
+sudo ln -s /etc/nginx/sites-available/my_custom_site /etc/nginx/sites-enabled/
+
+# Test the Nginx configuration
+sudo nginx -t
+
+# Restart Nginx to apply changes
 sudo service nginx restart
+
