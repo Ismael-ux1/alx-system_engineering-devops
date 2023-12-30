@@ -2,6 +2,14 @@
 # Bash script to reload Gunicorn in a graceful way.
 
 # Get the PID of the Gunicorn master process
-master_pid=$(ps auxf |pgrep gunicorn | head -1)
+master_pid=$(pgrep -f gunicorn | head -1)
 
-kill -1 "$master_pid"
+# Check if the master_pid variable is set and not empty
+if [ -n "$master_pid" ]; then
+    # If the master_pid variable is set and not empty,
+    # send the HUP signal to the Gunicorn master process
+    kill -HUP "$master_pid"
+else
+    # If the master_pid variable is not set or empty, print an error message
+    echo "Error: Could not find the Gunicorn master process."
+fi
