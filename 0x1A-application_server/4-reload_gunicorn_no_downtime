@@ -2,7 +2,6 @@
 # Bash script to reload Gunicorn in a graceful way.
 
 # Get the PID of the Gunicorn master process
-master_pid=$(pgrep -f gunicorn | head -1)
+master_pid=$(ps auxf |pgrep gunicorn | head -1)
 
-# send the HUP signal to the Gunicorn master process
-kill -HUP "$master_pid"
+kill -1 "$master_pid"
