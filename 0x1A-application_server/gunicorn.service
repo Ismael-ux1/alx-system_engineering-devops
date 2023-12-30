@@ -1,11 +1,11 @@
-[Unit]
-Description=unicorn instance to serve AirBnB_clone_v4
+t]
+Description=Gunicorn instance to serve application
 After=network.target
 
 [Service]
 User=ubuntu
 Group=ubuntu
-WorkingDirectory=/home/ubuntu/AirBnB_clone_v4/
+WorkingDirectory=/home/ubuntu/AirBnB_clone_v4
 Environment="HBNB_MYSQL_USER=hbnb_dev"
 Environment="HBNB_MYSQL_PWD=hbnb_dev_pwd"
 Environment="HBNB_MYSQL_HOST=localhost"
@@ -15,3 +15,4 @@ ExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 --bind 0.0.0.0:5003 --err
 
 [Install]
 WantedBy=multi-user.target
+
